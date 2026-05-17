@@ -12,22 +12,23 @@
     <style>
         /* ─── TOKENS ─────────────────────────────────────────── */
         :root {
-            --bg: #FAF7F2;
+            --bg: #FCF9F5;
             --surface: #FFFFFF;
-            --surface2: #F5EFE6;
-            --border: #E8DDD0;
-            --accent: #B5652A;
-            --accent-dk: #8E4E20;
-            --accent-lt: #F2E4D4;
+            --surface2: #FDF7ED;
+            --border: #E8D6C1;
+            --accent-yellow: #F2AC29;
+            --accent: #F29A2E;
+            --accent-dk: #BF8136;
+            --accent-lt: #FDEECE;
             --green: #2D6A4F;
             --green-dk: #1B4332;
             --green-lt: #D8F3DC;
-            --text: #1C1208;
-            --text-2: #6B5744;
-            --text-3: #9E8A78;
-            --shadow-sm: 0 2px 8px rgba(28, 18, 8, .06);
-            --shadow-md: 0 8px 24px rgba(28, 18, 8, .09);
-            --shadow-lg: 0 20px 48px rgba(28, 18, 8, .13);
+            --text: #402422;
+            --text-2: #8C5320;
+            --text-3: #BF8136;
+            --shadow-sm: 0 2px 8px rgba(64, 36, 34, .06);
+            --shadow-md: 0 8px 24px rgba(64, 36, 34, .09);
+            --shadow-lg: 0 20px 48px rgba(64, 36, 34, .13);
             --radius: 20px;
             --radius-sm: 12px;
             --transition: .22s cubic-bezier(.4, 0, .2, 1);
@@ -66,9 +67,10 @@
 
         /* ─── HEADER ─────────────────────────────────────────── */
         .header {
-            background: var(--text);
-            color: #fff;
+            background: var(--accent-yellow);
+            color: var(--text);
             padding: 0 clamp(1.5rem, 5vw, 3rem);
+            border-bottom: 1px solid rgba(64, 36, 34, 0.1);
         }
 
         .header-inner {
@@ -87,23 +89,26 @@
             font-size: clamp(1.8rem, 4vw, 2.8rem);
             font-weight: 700;
             letter-spacing: -.5px;
+            color: var(--text);
         }
 
         .header-brand p {
-            color: rgba(255, 255, 255, .55);
+            color: var(--text-2);
             font-size: .9rem;
             margin-top: .3rem;
+            font-weight: 500;
         }
 
         .header-badge {
-            background: var(--accent);
-            color: #fff;
+            background: var(--surface);
+            color: var(--text);
             padding: .45rem 1.1rem;
             border-radius: 100px;
             font-size: .75rem;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: .3px;
             white-space: nowrap;
+            box-shadow: var(--shadow-sm);
         }
 
         /* ─── LAYOUT ──────────────────────────────────────────── */
@@ -227,11 +232,12 @@
             font-size: .82rem;
             font-weight: 600;
             letter-spacing: .2px;
-            transition: background var(--transition), transform var(--transition);
+            transition: background var(--transition), color var(--transition), transform var(--transition);
         }
 
         .btn-add:hover {
             background: var(--accent);
+            color: var(--text);
         }
 
         .btn-add:active {
@@ -357,7 +363,7 @@
 
         .qty-btn:hover {
             background: var(--accent);
-            color: #fff;
+            color: var(--text);
         }
 
         .qty-num {
@@ -498,7 +504,7 @@
         /* ─── FOOTER ──────────────────────────────────────────── */
         footer {
             background: var(--text);
-            color: rgba(255, 255, 255, .5);
+            color: rgba(255, 255, 255, .6);
             text-align: center;
             padding: 1.75rem;
             font-size: .8rem;
@@ -506,7 +512,8 @@
         }
 
         footer span {
-            color: rgba(255, 255, 255, .8);
+            color: var(--accent-yellow);
+            font-weight: 600;
         }
 
         /* ─── ADMIN TOGGLE ───────────────────────────────────── */
@@ -720,18 +727,19 @@
 
         .btn-primary {
             background: var(--accent);
-            color: #fff;
+            color: var(--text);
             border: none;
             border-radius: var(--radius-sm);
             padding: .62rem 1.2rem;
             font-size: .85rem;
-            font-weight: 600;
+            font-weight: 700;
             white-space: nowrap;
             transition: background var(--transition), transform var(--transition);
         }
 
         .btn-primary:hover {
             background: var(--accent-dk);
+            color: #fff;
         }
 
         .btn-primary:active {
@@ -959,7 +967,7 @@
         .filter-chip.active {
             background: var(--accent);
             border-color: var(--accent);
-            color: #fff;
+            color: var(--text);
         }
 
         .filters-right {
@@ -1449,7 +1457,7 @@
 
     <!-- FOOTER -->
     <footer>
-        <span>Bendito Café</span> · Innovación en producción sin desperdicios · Santa Lucía
+        <span>Bendito Café</span> · Innovación en producción · Santa Lucía
     </footer>
 
     <!-- ADMIN FAB -->
@@ -1952,7 +1960,7 @@
                     `\nTotal: L. ${p.total.toFixed(2)}\n\n` +
                     (p.cliente.notas ? `Nota: "${p.cliente.notas}"\n\n` : '') +
                     `Tu pedido está actualmente: ${p.estado === 'pendiente' ? '¡En preparación!' : p.estado === 'completado' ? '¡Listo para retirar!' : 'Cancelado'}.\n` +
-                    `¡Muchas gracias por tu preferencia! ✨`
+                    `¡Muchas gracias por tu preferencia!`
                 );
                 const cleanPhone = p.cliente.telefono.replace(/[^0-9]/g, '');
                 const fullPhone = cleanPhone.length === 8 ? `504${cleanPhone}` : cleanPhone;
