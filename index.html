@@ -538,6 +538,9 @@
             transition: background var(--transition), transform var(--transition);
             display: grid;
             place-items: center;
+            cursor: pointer;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .fab-btn:hover {
@@ -551,29 +554,27 @@
             inset: 0;
             background: rgba(0, 0, 0, .55);
             backdrop-filter: blur(4px);
-            z-index: 1000;
-            display: flex;
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 10000;
+            display: none;
             align-items: center;
             justify-content: center;
             padding: 1rem;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .25s;
         }
 
         .modal-overlay.open {
-            opacity: 1;
-            pointer-events: all;
+            display: flex;
+            animation: fadeInOverlay .2s ease-out forwards;
         }
 
         .modal-box {
-            background: var(--bg);
+            background: #FCF9F5 !important;
             border-radius: 28px;
             width: 100%;
             max-width: 960px;
             max-height: 90vh;
             overflow-y: auto;
-            padding: clamp(1.5rem, 4vw, 2.5rem);
+            padding: clamp(1.25rem, 4vw, 2.5rem);
             box-shadow: var(--shadow-lg);
             transform: translateY(20px) scale(.97);
             transition: transform .25s cubic-bezier(.4, 0, .2, 1);
@@ -597,10 +598,17 @@
         }
 
         .modal-header {
+            position: sticky;
+            top: 0;
+            background: #FCF9F5 !important;
+            z-index: 10;
+            padding-top: 0.25rem;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.5rem;
             gap: 1rem;
         }
 
@@ -632,13 +640,24 @@
             display: flex;
             gap: .5rem;
             overflow-x: auto;
-            padding-bottom: 1px;
+            padding-bottom: 6px;
             margin-bottom: 1.75rem;
             border-bottom: 2px solid var(--border);
+            -webkit-overflow-scrolling: touch;
         }
 
         .tabs::-webkit-scrollbar {
-            display: none;
+            height: 4px;
+        }
+
+        .tabs::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 4px;
+        }
+
+        .tabs::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
         }
 
         .tab-btn {
@@ -1215,23 +1234,21 @@
             inset: 0;
             background: rgba(0, 0, 0, .45);
             backdrop-filter: blur(3px);
-            z-index: 1100;
-            display: flex;
+            -webkit-backdrop-filter: blur(3px);
+            z-index: 11000;
+            display: none;
             align-items: center;
             justify-content: center;
             padding: 1rem;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .25s;
         }
 
         .order-detail-overlay.open {
-            opacity: 1;
-            pointer-events: all;
+            display: flex;
+            animation: fadeInOverlay .2s ease-out forwards;
         }
 
         .order-detail-box {
-            background: var(--bg);
+            background: #FCF9F5 !important;
             border-radius: 24px;
             width: 100%;
             max-width: 520px;
@@ -1347,7 +1364,7 @@
             gap: 1rem;
             font-size: .85rem;
             font-weight: 500;
-            z-index: 1200;
+            z-index: 15000;
             opacity: 0;
             pointer-events: none;
             transition: transform .3s cubic-bezier(.175, .885, .32, 1.275), opacity .3s;
@@ -1375,6 +1392,86 @@
 
         .btn-undo:hover {
             color: #fff;
+        }
+
+        /* ─── MOBILE MEDIA QUERIES & FIXES ────────────────────── */
+        body.modal-open {
+            overflow: hidden !important;
+        }
+
+        body.modal-open .admin-fab {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .modal-overlay {
+                padding: 0.5rem;
+            }
+
+            .modal-box {
+                padding: 1.25rem 1rem !important;
+                border-radius: 18px;
+                max-height: 95vh;
+            }
+
+            .modal-header {
+                padding-top: 0;
+                padding-bottom: 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .modal-title {
+                font-size: 1.2rem;
+            }
+
+            .tabs {
+                gap: .25rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .tab-btn {
+                padding: .45rem .75rem;
+                font-size: .8rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+
+            .orders-filters-bar {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 1rem !important;
+            }
+
+            .filters-left {
+                flex-wrap: wrap !important;
+                gap: .4rem !important;
+            }
+
+            .filters-right {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                width: 100% !important;
+            }
+
+            .search-wrapper {
+                width: 100% !important;
+            }
+
+            .date-filter-input {
+                width: 100% !important;
+            }
+
+            .metrics-board {
+                grid-template-columns: 1fr !important;
+                gap: .75rem !important;
+            }
+
+            .metric-card {
+                padding: 1rem !important;
+            }
         }
     </style>
 </head>
@@ -2178,7 +2275,76 @@
         }
 
         /* ─── INIT ─────────────────────────────────────────────── */
+        function abrirAdminModal() {
+            // Abrir primero para que, aunque falle un render en algún dispositivo, el modal al menos aparezca.
+            document.body.classList.add("modal-open");
+            const adminModal = document.getElementById("adminModal");
+            if (adminModal) adminModal.classList.add("open");
+
+            try {
+                // Asegurar que la pestaña "Pedidos" esté activa por defecto al abrir
+                document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+                document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+                const tabBtn = document.querySelector('.tab-btn[data-tab="pedidos"]');
+                if (tabBtn) tabBtn.classList.add("active");
+                const tabPane = document.getElementById("tabPedidos");
+                if (tabPane) tabPane.classList.add("active");
+
+                renderizarAdminPedidos();
+                renderizarListaProductos(); renderizarListaIngredientes();
+                cargarSelectoresRecetas(); renderizarAdminProduccion();
+            } catch (err) {
+                console.error("Error al abrir el panel de administración:", err);
+            }
+        }
+        window.abrirAdminModal = abrirAdminModal;
+
+        function cerrarAdminModal() {
+            document.body.classList.remove("modal-open");
+            const adminModal = document.getElementById("adminModal");
+            if (adminModal) adminModal.classList.remove("open");
+        }
+        window.cerrarAdminModal = cerrarAdminModal;
+
+        function setupAdminModalHandlers() {
+            const toggleBtn = document.getElementById("adminToggleBtn");
+            const closeBtn = document.getElementById("closeAdminBtn");
+            const adminModal = document.getElementById("adminModal");
+            if (!toggleBtn || !closeBtn || !adminModal) return;
+
+            // Evitar doble binding si esta función se llama más de una vez.
+            if (toggleBtn.dataset.bound === "1") return;
+            toggleBtn.dataset.bound = "1";
+
+            const open = (e) => {
+                // En algunos Android puede dispararse touch + click; bloqueamos duplicados.
+                if (e) {
+                    e.preventDefault?.();
+                    e.stopPropagation?.();
+                }
+                if (toggleBtn.dataset.opening === "1") return;
+                toggleBtn.dataset.opening = "1";
+                requestAnimationFrame(() => { toggleBtn.dataset.opening = "0"; });
+                abrirAdminModal();
+            };
+
+            // Fallback robusto para móviles: pointer/touch además de click.
+            toggleBtn.addEventListener("pointerup", open);
+            toggleBtn.addEventListener("touchend", open, { passive: false });
+            toggleBtn.addEventListener("click", open);
+
+            closeBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                cerrarAdminModal();
+            });
+
+            adminModal.addEventListener("click", e => {
+                if (e.target === adminModal) cerrarAdminModal();
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
+            setupAdminModalHandlers();
             cargarDatos();
             renderizarMenu();
             renderizarCarrito();
@@ -2192,29 +2358,9 @@
             }
 
             document.getElementById("realizarPedidoBtn").addEventListener("click", realizarPedido);
-            document.getElementById("adminToggleBtn").addEventListener("click", () => {
-                // Asegurar que la pestaña "Pedidos" esté activa por defecto al abrir
-                document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-                document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-                const tabBtn = document.querySelector('.tab-btn[data-tab="pedidos"]');
-                if (tabBtn) tabBtn.classList.add("active");
-                const tabPane = document.getElementById("tabPedidos");
-                if (tabPane) tabPane.classList.add("active");
-
-                renderizarAdminPedidos();
-                renderizarListaProductos(); renderizarListaIngredientes();
-                cargarSelectoresRecetas(); renderizarAdminProduccion();
-                document.getElementById("adminModal").classList.add("open");
-            });
-            document.getElementById("closeAdminBtn").addEventListener("click", () =>
-                document.getElementById("adminModal").classList.remove("open"));
-            document.getElementById("adminModal").addEventListener("click", e => {
-                if (e.target === document.getElementById("adminModal"))
-                    document.getElementById("adminModal").classList.remove("open");
-            });
             document.addEventListener("keydown", e => {
                 if (e.key === "Escape") {
-                    document.getElementById("adminModal").classList.remove("open");
+                    cerrarAdminModal();
                     cerrarDetallePedido();
                 }
             });
@@ -2228,6 +2374,9 @@
             });
             initTabs();
         });
+
+        // Si por alguna razón DOMContentLoaded ya ocurrió (p.ej. BFCache), intentamos enlazar igual.
+        setupAdminModalHandlers();
     </script>
 
     <!-- ORDER DETAIL MODAL -->
