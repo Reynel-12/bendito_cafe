@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bendito Café · Panadería Artesanal</title>
+    <link rel="shortcut icon" href="bendito_cafe.jpg" type="image/jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
@@ -18,8 +19,11 @@
     <header class="header">
         <div class="header-inner">
             <div class="header-brand">
-                <h1>Bendito Café</h1>
-                <p>Santa Lucía · Panadería &amp; Repostería Artesanal</p>
+                <img src="bendito_cafe.jpg" alt="Logo Bendito Café" class="header-logo">
+                <div class="header-brand-text">
+                    <h1>Bendito Café</h1>
+                    <p>Santa Lucía · Panadería &amp; Repostería Artesanal</p>
+                </div>
             </div>
             <!--  <div class="header-badge">Producción sin desperdicios</div> -->
         </div>
@@ -29,6 +33,28 @@
     <main class="page">
         <!-- PRODUCTS -->
         <section>
+            <!-- BRAND BANNER -->
+            <div class="brand-banner-card">
+                <img src="bendito_cafe.jpg" alt="Logo Bendito Café" class="brand-banner-logo">
+                <div class="brand-banner-content">
+                    <span class="brand-banner-tagline">Artesanal &amp; Hecho con Amor</span>
+                    <h2 class="brand-banner-title">Bienvenidos a Bendito Café</h2>
+                    <p class="brand-banner-desc">
+                        En el corazón de Santa Lucía, elaboramos panadería y repostería artesanal con ingredientes de la más alta calidad y un sabor único. Disfruta de nuestro tradicional Pan de Yema y deliciosos postres recién horneados.
+                    </p>
+                    <div class="brand-banner-meta">
+                        <span class="meta-badge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            Martes a Domingo
+                        </span>
+                        <span class="meta-badge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            Santa Lucía, Honduras
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="section-title">Repostería &amp; Pan de Yema</h2>
             <div class="products-grid" id="productosGrid"></div>
         </section>
