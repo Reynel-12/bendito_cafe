@@ -236,6 +236,7 @@
          align-items: center;
          padding: 1.5rem;
      }
+
      .brand-banner-meta {
          justify-content: center;
      }
@@ -1643,4 +1644,40 @@
          width: 38px !important;
          height: 38px !important;
      }
+ }
+
+ /* Back to site floating button */
+ .btn-back-home {
+    /* Responsive logout button in header */
+    position: relative;
+    margin-left: auto;
+    top: auto;
+    right: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    color: var(--text-2);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--login-transition);
+}
+
+@media (max-width: 480px) {
+    .btn-back-home {
+        font-size: 0.75rem;
+        padding: 0.5rem 0.9rem;
+    }
+}
+
+ .btn-back-home:hover {
+     color: var(--text);
+     border-color: var(--accent);
+     transform: translateX(-4px);
+     box-shadow: var(--shadow-md);
  }

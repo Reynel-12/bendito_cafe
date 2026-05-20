@@ -635,6 +635,10 @@ function setupOrderFilters() {
 window.setupOrderFilters = setupOrderFilters;
 
 function abrirAdminModal() {
+    if (localStorage.getItem("bendito_logged_in") !== "true") {
+        window.location.href = "login.html";
+        return;
+    }
     // Abrir primero para que, aunque falle un render en algún dispositivo, el modal al menos aparezca.
     document.body.classList.add("modal-open");
     const adminModal = document.getElementById("adminModal");
@@ -751,6 +755,25 @@ document.addEventListener("DOMContentLoaded", () => {
         mostrarMsgAdmin("Pedidos reiniciados.", false);
     });
     initTabs();
+
+    // Admin Session Auto-open and Logout actions
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === 'true' && localStorage.getItem("bendito_logged_in") === "true") {
+        // Clean URL to prevent re-opening modal on refresh
+        window.history.replaceState({}, document.title, window.location.pathname);
+        abrirAdminModal();
+    }
+
+    const logoutBtn = document.getElementById("logoutAdminBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            if (confirm("¿Estás seguro de que deseas cerrar la sesión?")) {
+                localStorage.removeItem("bendito_logged_in");
+                cerrarAdminModal();
+                window.location.href = "login.html";
+            }
+        });
+    }
 });
 
 // Si por alguna razón DOMContentLoaded ya ocurrió (p.ej. BFCache), intentamos enlazar igual.

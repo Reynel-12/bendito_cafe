@@ -15,7 +15,6 @@
 
 <body>
 
-    <!-- HEADER -->
     <header class="header">
         <div class="header-inner">
             <div class="header-brand">
@@ -25,7 +24,16 @@
                     <p>Santa Lucía · Panadería &amp; Repostería Artesanal</p>
                 </div>
             </div>
-            <!--  <div class="header-badge">Producción sin desperdicios</div> -->
+            <!-- Floating navigation back moved inside header-inner for responsiveness -->
+            <a href="login.html" class="btn-back-home" aria-label="Cerrar sesión">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Cerrar sesión
+            </a>
         </div>
     </header>
 
@@ -40,15 +48,26 @@
                     <span class="brand-banner-tagline">Artesanal &amp; Hecho con Amor</span>
                     <h2 class="brand-banner-title">Bienvenidos a Bendito Café</h2>
                     <p class="brand-banner-desc">
-                        En el corazón de Santa Lucía, elaboramos panadería y repostería artesanal con ingredientes de la más alta calidad y un sabor único. Disfruta de nuestro tradicional Pan de Yema y deliciosos postres recién horneados.
+                        En el corazón de Santa Lucía, elaboramos panadería y repostería artesanal con ingredientes
+                        de la
+                        más alta calidad y un sabor único. Disfruta de nuestro tradicional Pan de Yema y deliciosos
+                        postres recién horneados.
                     </p>
                     <div class="brand-banner-meta">
                         <span class="meta-badge">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
                             Martes a Domingo
                         </span>
                         <span class="meta-badge">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
                             Santa Lucía, Honduras
                         </span>
                     </div>
@@ -136,7 +155,21 @@
         <div class="modal-box">
             <div class="modal-header">
                 <h2 class="modal-title">Panel de administración</h2>
-                <button class="btn-close-modal" id="closeAdminBtn" aria-label="Cerrar">✕</button>
+                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                    <!--  <button class="btn-secondary" id="logoutAdminBtn"
+                        style="padding: 0.45rem 0.9rem; font-size: 0.8rem; border-radius: var(--radius-sm); display: inline-flex; align-items: center; gap: 0.35rem;"
+                        title="Cerrar sesión">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                            style="vertical-align: middle;">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Cerrar sesión
+                    </button>  -->
+                    <button class="btn-close-modal" id="closeAdminBtn" aria-label="Cerrar">✕</button>
+                </div>
             </div>
 
             <div class="tabs" role="tablist">

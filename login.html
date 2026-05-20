@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión · Bendito Café</title>
+    <link rel="shortcut icon" href="bendito_cafe.jpg" type="image/jpeg">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Login Specific Styles (Self-contained and clean, overriding/extending style.css) -->
+    <style>
+        :root {
+            --login-bg: #FCF9F5;
+            --login-card: #FFFFFF;
+            --login-text: #402422;
+            --login-accent: #F29A2E;
+            --login-accent-dk: #BF8136;
+            --login-border: #E8D6C1;
+            --login-radius: 24px;
+            --login-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.login-body {
+            display: flex;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            align-items: stretch;
+        }
+
+        /* Split Layout */
+        .login-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        /* Left Side: Coffee Brand Visuals */
+        .login-visual-panel {
+            flex: 1.1;
+            background: linear-gradient(135deg, #402422 0%, #1A0D0C 100%);
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            color: #FFF;
+        }
+
+        /* Subtle Animated Coffee Steam Background Effect */
+        .login-visual-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(242, 154, 46, 0.05) 0%, transparent 60%);
+            animation: rotateSteam 30s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotateSteam {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .visual-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 2;
+            animation: fadeInVisual 0.6s ease-out;
+        }
+
+        .visual-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            object-fit: cover;
+        }
+
+        .visual-brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-yellow);
+        }
+
+        .visual-content {
+            margin-top: auto;
+            margin-bottom: auto;
+            max-width: 480px;
+            z-index: 2;
+            animation: fadeInVisual 0.8s ease-out;
+        }
+
+        .visual-tagline {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-yellow);
+            margin-bottom: 0.75rem;
+            display: inline-block;
+        }
+
+        .visual-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: #FFF;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .visual-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #E8D6C1;
+            margin-bottom: 2rem;
+        }
+
+        .visual-footer {
+            font-size: 0.8rem;
+            color: rgba(232, 214, 193, 0.6);
+            z-index: 2;
+            animation: fadeInVisual 1s ease-out;
+        }
+
+        /* Right Side: Form Panel */
+        .login-form-panel {
+            flex: 0.9;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        /* Back to site floating button */
+        .btn-back-home {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text-2);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--login-transition);
+        }
+
+        .btn-back-home:hover {
+            color: var(--text);
+            border-color: var(--accent);
+            transform: translateX(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--login-radius);
+            padding: 2.75rem 2.5rem;
+            box-shadow: var(--shadow-md);
+            animation: cardSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header-text {
+            text-align: center;
+            margin-bottom: 2.25rem;
+        }
+
+        .login-card-logo-mobile {
+            display: none;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-yellow);
+            margin: 0 auto 1rem;
+            object-fit: cover;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .login-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-2);
+            font-weight: 400;
+        }
+
+        /* Forms Styling */
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-2);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.2px;
+            transition: color var(--login-transition);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon-left {
+            position: absolute;
+            left: 1rem;
+            color: var(--text-3);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 48px;
+            /* Touch target height >=44px */
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface2);
+            color: var(--text);
+            font-size: 0.95rem;
+            transition: all var(--login-transition);
+            outline: none;
+        }
+
+        /* Password input needs extra padding on the right for eye toggle */
+        .form-input-password {
+            padding-right: 2.75rem;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent);
+            background: var(--surface);
+            box-shadow: 0 0 0 4px rgba(242, 154, 46, 0.12);
+        }
+
+        .form-group.has-error .form-input {
+            border-color: #C0392B;
+            box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.12);
+        }
+
+        .form-group.has-error .form-label {
+            color: #C0392B;
+        }
+
+        .input-error-msg {
+            display: none;
+            color: #C0392B;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.4rem;
+            animation: errorSlideDown 0.2s ease-out forwards;
+        }
+
+        @keyframes errorSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Password Toggle Button */
+        .password-toggle-btn {
+            position: absolute;
+            right: 0.5rem;
+            height: 38px;
+            width: 38px;
+            border: none;
+            background: transparent;
+            border-radius: 50%;
+            color: var(--text-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--login-transition);
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .password-toggle-btn:hover {
+            background: rgba(140, 83, 32, 0.08);
+            color: var(--text);
+        }
+
+        .password-toggle-btn:focus-visible {
+            outline: 2px solid var(--accent);
+        }
+
+        /* Helper row: Remember & Forgot */
+        .form-helper-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.75rem;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        /* Custom Checkbox */
+        .remember-checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--text-2);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .checkbox-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            background: var(--surface2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--login-transition);
+            position: relative;
+        }
+
+        .remember-checkbox-label:hover .checkbox-custom {
+            border-color: var(--accent);
+        }
+
+        .checkbox-input:focus-visible+.checkbox-custom {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .checkbox-input:checked+.checkbox-custom {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .checkbox-custom svg {
+            width: 12px;
+            height: 12px;
+            color: #FFF;
+            stroke-width: 4px;
+            transform: scale(0);
+            transition: transform 0.15s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+        }
+
+        .checkbox-input:checked+.checkbox-custom svg {
+            transform: scale(1);
+        }
+
+        .forgot-link {
+            color: var(--text-2);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color var(--login-transition);
+        }
+
+        .forgot-link:hover {
+            color: var(--accent-dk);
+            text-decoration: underline;
+        }
+
+        .forgot-link:focus-visible {
+            outline: 2px solid var(--accent);
+            border-radius: 4px;
+            padding: 0 2px;
+        }
+
+        /* Submit Button */
+        .btn-login-submit {
+            width: 100%;
+            height: 48px;
+            /* Touch target height >=44px */
+            background: var(--green);
+            color: #FFF;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all var(--login-transition);
+            box-shadow: 0 4px 12px rgba(45, 106, 79, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login-submit:hover {
+            background: var(--green-dk);
+            box-shadow: 0 6px 18px rgba(45, 106, 79, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-login-submit:active {
+            transform: translateY(1px) scale(0.99);
+        }
+
+        .btn-login-submit:focus-visible {
+            outline: 3px solid var(--green-lt);
+            outline-offset: 2px;
+        }
+
+        .btn-login-submit:disabled {
+            background: var(--border);
+            color: var(--text-3);
+            box-shadow: none;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        /* Button Loading Spinner */
+        .btn-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #FFF;
+            border-radius: 50%;
+            animation: spin 0.8s infinite linear;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Toast notification inside card */
+        .login-alert {
+            display: none;
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            align-items: center;
+            gap: 0.75rem;
+            animation: errorSlideDown 0.3s ease-out forwards;
+        }
+
+        .login-alert.alert-error {
+            background: #FDE8E8;
+            color: #9B1C1C;
+            border-left: 4px solid #C0392B;
+        }
+
+        .login-alert.alert-success {
+            background: #DEF7EC;
+            color: #03543F;
+            border-left: 4px solid var(--green);
+        }
+
+        /* Credentials Helper Box */
+        .credentials-tip {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--surface2);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            color: var(--text-2);
+            line-height: 1.4;
+        }
+
+        .credentials-tip strong {
+            color: var(--text);
+        }
+
+        /* Forgot Password Modal style */
+        .forgot-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: fadeInOverlay 0.2s ease-out forwards;
+        }
+
+        @keyframes fadeInOverlay {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .forgot-modal-box {
+            background: #FCF9F5;
+            border: 1px solid var(--border);
+            border-radius: var(--login-radius);
+            width: 100%;
+            max-width: 440px;
+            padding: 2.25rem 2rem;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(20px) scale(0.97);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .forgot-modal-overlay.open {
+            display: flex;
+        }
+
+        .forgot-modal-overlay.open .forgot-modal-box {
+            transform: translateY(0) scale(1);
+        }
+
+        .forgot-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .forgot-modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .btn-close-forgot {
+            width: 32px;
+            height: 32px;
+            background: var(--surface2);
+            border: none;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            color: var(--text-2);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: all var(--login-transition);
+        }
+
+        .btn-close-forgot:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .forgot-description {
+            font-size: 0.85rem;
+            color: var(--text-2);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ─── RESPONSIVE LAYOUT & MEDIA QUERIES ──────────────── */
+        @media (max-width: 960px) {
+            .login-visual-panel {
+                display: none;
+                /* Hide left side on smaller tablets and mobile */
+            }
+
+            .login-form-panel {
+                flex: 1;
+                padding: 4rem 1.5rem 2rem;
+            }
+
+            .login-card-logo-mobile {
+                display: block;
+            }
+
+            .btn-back-home {
+                top: 1rem;
+                right: 1rem;
+                font-size: 0.8rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-form-panel {
+                padding: 3rem 1rem 1.5rem;
+            }
+
+            .login-card {
+                padding: 2rem 1.25rem;
+                border-radius: 20px;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+            }
+
+            .login-title {
+                font-size: 1.75rem;
+            }
+
+            .btn-login-submit {
+                height: 46px;
+            }
+        }
+
+        /* Animations helpers */
+        @keyframes fadeInVisual {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="login-body">
+
+    <div class="login-container">
+
+        <!-- LEFT SIDE: Coffee Brand Visuals -->
+        <section class="login-visual-panel" aria-label="Información de la marca">
+            <div class="visual-header">
+                <img src="bendito_cafe.jpg" alt="Logo Bendito Café" class="visual-logo">
+                <span class="visual-brand-name">Bendito Café</span>
+            </div>
+
+            <div class="visual-content">
+                <span class="visual-tagline">Panadería &amp; Repostería Artesanal</span>
+                <h1 class="visual-title">El sabor de lo hecho con el corazón</h1>
+                <p class="visual-description">
+                    Entra a tu panel administrativo para gestionar pedidos, productos e ingredientes, y sigamos
+                    reduciendo desperdicios produciendo exactamente lo que nuestros clientes aman.
+                </p>
+            </div>
+
+            <div class="visual-footer">
+                © 2026 Bendito Café · Santa Lucía, Honduras. Todos los derechos reservados.
+            </div>
+        </section>
+
+        <!-- RIGHT SIDE: Form Panel -->
+        <main class="login-form-panel">
+
+            <!-- Floating navigation back -->
+            <!--  <a href="index.html" class="btn-back-home" aria-label="Volver a la tienda">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Volver a la tienda
+            </a>  -->
+
+            <!-- Login Card -->
+            <div class="login-card">
+
+                <div class="login-header-text">
+                    <img src="bendito_cafe.jpg" alt="Logo Bendito Café" class="login-card-logo-mobile">
+                    <h2 class="login-title">¡Hola de nuevo!</h2>
+                    <p class="login-subtitle">Ingresa tus credenciales para acceder al panel</p>
+                </div>
+
+                <!-- Alert Message -->
+                <div class="login-alert" id="loginAlertBox" role="alert">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span id="loginAlertMsg">Mensaje de alerta</span>
+                </div>
+
+                <!-- FORM -->
+                <form id="loginForm" novalidate>
+
+                    <!-- Email input group -->
+                    <div class="form-group" id="emailGroup">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon-left" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </span>
+                            <input type="email" id="email" class="form-input" placeholder="ejemplo@benditocafe.com"
+                                autocomplete="email" required>
+                        </div>
+                        <span class="input-error-msg" id="emailError">Ingresa un correo electrónico válido</span>
+                    </div>
+
+                    <!-- Password input group -->
+                    <div class="form-group" id="passwordGroup">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon-left" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </span>
+                            <input type="password" id="password" class="form-input form-input-password"
+                                placeholder="••••••••" autocomplete="current-password" required>
+                            <!-- Password visibility toggle -->
+                            <button type="button" class="password-toggle-btn" id="passwordToggleBtn"
+                                aria-label="Mostrar contraseña" title="Mostrar contraseña">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="eyeIcon">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                        <span class="input-error-msg" id="passwordError">La contraseña debe tener al menos 6
+                            caracteres</span>
+                    </div>
+
+                    <!-- Helper actions row -->
+                    <div class="form-helper-row">
+                        <!-- Custom checkbox -->
+                        <label class="remember-checkbox-label" for="remember">
+                            <input type="checkbox" id="remember" class="checkbox-input">
+                            <span class="checkbox-custom" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            Recordar sesión
+                        </label>
+
+                        <!-- Forgot password trigger -->
+                        <a href="#" class="forgot-link" id="forgotPasswordBtn">¿Olvidaste tu contraseña?</a>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-login-submit" id="submitBtn">
+                        <span class="btn-spinner" id="btnSpinner" aria-hidden="true"></span>
+                        <span id="btnText">Iniciar Sesión</span>
+                    </button>
+
+                </form>
+
+                <!-- Credentials Tip -->
+                <div class="credentials-tip">
+                    <p><strong>Acceso Demo:</strong></p>
+                    <p>Correo: <code>admin@benditocafe.com</code></p>
+                    <p>Contraseña: <code>admin123</code></p>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- FORGOT PASSWORD MODAL -->
+    <div class="forgot-modal-overlay" id="forgotModal" role="dialog" aria-modal="true" aria-labelledby="forgotTitle">
+        <div class="forgot-modal-box">
+            <div class="forgot-modal-header">
+                <h3 class="forgot-modal-title" id="forgotTitle">Reestablecer Contraseña</h3>
+                <button class="btn-close-forgot" id="closeForgotBtn" aria-label="Cerrar modal">&times;</button>
+            </div>
+
+            <p class="forgot-description">
+                Ingresa el correo electrónico asociado a tu cuenta. Te enviaremos un enlace con las instrucciones para
+                reestablecer tu contraseña.
+            </p>
+
+            <form id="forgotForm" novalidate>
+                <div class="form-group" id="forgotEmailGroup">
+                    <label for="forgotEmail" class="form-label">Correo electrónico</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon-left" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                </path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </span>
+                        <input type="email" id="forgotEmail" class="form-input" placeholder="ejemplo@benditocafe.com"
+                            required>
+                    </div>
+                    <span class="input-error-msg" id="forgotEmailError">Ingresa un correo electrónico registrado
+                        válido</span>
+                </div>
+
+                <button type="submit" class="btn-login-submit" id="forgotSubmitBtn">
+                    <span class="btn-spinner" id="forgotBtnSpinner" aria-hidden="true"></span>
+                    <span id="forgotBtnText">Enviar enlace de recuperación</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT FOR INTERACTIVE LOGIN LOGIC -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const rememberCheckbox = document.getElementById('remember');
+
+            const emailGroup = document.getElementById('emailGroup');
+            const passwordGroup = document.getElementById('passwordGroup');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+
+            const passwordToggleBtn = document.getElementById('passwordToggleBtn');
+            const eyeIcon = document.getElementById('eyeIcon');
+
+            const submitBtn = document.getElementById('submitBtn');
+            const btnSpinner = document.getElementById('btnSpinner');
+            const btnText = document.getElementById('btnText');
+
+            const alertBox = document.getElementById('loginAlertBox');
+            const alertMsg = document.getElementById('loginAlertMsg');
+
+            // Password Show/Hide Toggle logic
+            passwordToggleBtn.addEventListener('click', () => {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                passwordToggleBtn.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+                passwordToggleBtn.setAttribute('title', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+
+                // Toggle SVG icon paths dynamically (Lucide style)
+                if (isPassword) {
+                    eyeIcon.innerHTML = `
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                    `;
+                } else {
+                    eyeIcon.innerHTML = `
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    `;
+                }
+            });
+
+            // Form Fields client-side validation on blur
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            function validateEmail() {
+                const val = emailInput.value.trim();
+                if (!val || !emailRegex.test(val)) {
+                    emailGroup.classList.add('has-error');
+                    emailError.style.display = 'block';
+                    emailError.textContent = val ? 'Por favor ingresa un correo con formato válido (ejemplo@correo.com)' : 'El correo electrónico es requerido';
+                    return false;
+                } else {
+                    emailGroup.classList.remove('has-error');
+                    emailError.style.display = 'none';
+                    return true;
+                }
+            }
+
+            function validatePassword() {
+                const val = passwordInput.value;
+                if (!val || val.length < 6) {
+                    passwordGroup.classList.add('has-error');
+                    passwordError.style.display = 'block';
+                    passwordError.textContent = val ? 'La contraseña debe tener al menos 6 caracteres' : 'La contraseña es requerida';
+                    return false;
+                } else {
+                    passwordGroup.classList.remove('has-error');
+                    passwordError.style.display = 'none';
+                    return true;
+                }
+            }
+
+            emailInput.addEventListener('blur', validateEmail);
+            emailInput.addEventListener('input', () => {
+                if (emailGroup.classList.contains('has-error')) validateEmail();
+            });
+
+            passwordInput.addEventListener('blur', validatePassword);
+            passwordInput.addEventListener('input', () => {
+                if (passwordGroup.classList.contains('has-error')) validatePassword();
+            });
+
+            // Auto-fill remembered email if saved
+            const savedEmail = localStorage.getItem('bendito_remembered_email');
+            if (savedEmail) {
+                emailInput.value = savedEmail;
+                rememberCheckbox.checked = true;
+            }
+
+            // Form Submit Logic
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                // Hide existing alerts
+                alertBox.style.display = 'none';
+
+                // Run full validation
+                const isEmailValid = validateEmail();
+                const isPassValid = validatePassword();
+
+                if (!isEmailValid || !isPassValid) {
+                    // Focus on first error field
+                    if (!isEmailValid) emailInput.focus();
+                    else passwordInput.focus();
+                    return;
+                }
+
+                // Enter loading state
+                submitBtn.disabled = true;
+                btnSpinner.style.display = 'inline-block';
+                btnText.textContent = 'Verificando...';
+                emailInput.disabled = true;
+                passwordInput.disabled = true;
+                rememberCheckbox.disabled = true;
+
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+
+                // Simulate network latency (1.5 seconds) for highly premium perceived quality
+                setTimeout(() => {
+                    if (email === 'admin@benditocafe.com' && password === 'admin123') {
+                        // Success State
+                        alertBox.style.display = 'flex';
+                        alertBox.className = 'login-alert alert-success';
+                        alertMsg.textContent = '¡Inicio de sesión exitoso! Redireccionando...';
+
+                        // Manage Session Memory
+                        localStorage.setItem('bendito_logged_in', 'true');
+                        if (rememberCheckbox.checked) {
+                            localStorage.setItem('bendito_remembered_email', email);
+                        } else {
+                            localStorage.removeItem('bendito_remembered_email');
+                        }
+
+                        // Clean Form elements states
+                        submitBtn.style.background = 'var(--green)';
+                        btnSpinner.style.display = 'none';
+                        btnText.textContent = '¡Acceso Concedido!';
+
+                        // Redirect after transition
+                        setTimeout(() => {
+                            window.location.href = 'index.html?admin=true';
+                        }, 1200);
+
+                    } else {
+                        // Failure State
+                        alertBox.style.display = 'flex';
+                        alertBox.className = 'login-alert alert-error';
+                        alertMsg.textContent = 'Credenciales incorrectas. Intenta con los datos de acceso demo.';
+
+                        // Re-enable form
+                        submitBtn.disabled = false;
+                        btnSpinner.style.display = 'none';
+                        btnText.textContent = 'Iniciar Sesión';
+                        emailInput.disabled = false;
+                        passwordInput.disabled = false;
+                        rememberCheckbox.disabled = false;
+                        passwordInput.focus();
+                    }
+                }, 1500);
+            });
+
+            // ─── FORGOT PASSWORD MODAL LOGIC ───────────────────
+            const forgotBtn = document.getElementById('forgotPasswordBtn');
+            const forgotModal = document.getElementById('forgotModal');
+            const closeForgotBtn = document.getElementById('closeForgotBtn');
+            const forgotForm = document.getElementById('forgotForm');
+            const forgotEmail = document.getElementById('forgotEmail');
+            const forgotEmailGroup = document.getElementById('forgotEmailGroup');
+            const forgotEmailError = document.getElementById('forgotEmailError');
+            const forgotSubmitBtn = document.getElementById('forgotSubmitBtn');
+            const forgotBtnSpinner = document.getElementById('forgotBtnSpinner');
+            const forgotBtnText = document.getElementById('forgotBtnText');
+
+            function openForgotModal(e) {
+                if (e) e.preventDefault();
+                forgotModal.classList.add('open');
+                forgotEmail.focus();
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeForgotModal() {
+                forgotModal.classList.remove('open');
+                forgotForm.reset();
+                forgotEmailGroup.classList.remove('has-error');
+                forgotEmailError.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+
+            forgotBtn.addEventListener('click', openForgotModal);
+            closeForgotBtn.addEventListener('click', closeForgotModal);
+
+            // Close modal on click overlay
+            forgotModal.addEventListener('click', (e) => {
+                if (e.target === forgotModal) closeForgotModal();
+            });
+
+            // Keyboard accessibility for Modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && forgotModal.classList.contains('open')) {
+                    closeForgotModal();
+                }
+            });
+
+            // Forgot form validation & submission
+            forgotEmail.addEventListener('blur', () => {
+                const val = forgotEmail.value.trim();
+                if (!val || !emailRegex.test(val)) {
+                    forgotEmailGroup.classList.add('has-error');
+                    forgotEmailError.style.display = 'block';
+                    forgotEmailError.textContent = val ? 'Ingresa un formato de correo válido' : 'El correo es requerido';
+                } else {
+                    forgotEmailGroup.classList.remove('has-error');
+                    forgotEmailError.style.display = 'none';
+                }
+            });
+
+            forgotForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const val = forgotEmail.value.trim();
+
+                if (!val || !emailRegex.test(val)) {
+                    forgotEmailGroup.classList.add('has-error');
+                    forgotEmailError.style.display = 'block';
+                    forgotEmail.focus();
+                    return;
+                }
+
+                forgotSubmitBtn.disabled = true;
+                forgotBtnSpinner.style.display = 'inline-block';
+                forgotBtnText.textContent = 'Enviando...';
+                forgotEmail.disabled = true;
+
+                setTimeout(() => {
+                    // Simulated success message
+                    forgotBtnSpinner.style.display = 'none';
+                    forgotBtnText.textContent = '¡Enviado!';
+
+                    // Show custom success notification in parent page
+                    alertBox.style.display = 'flex';
+                    alertBox.className = 'login-alert alert-success';
+                    alertMsg.textContent = `Enlace de recuperación enviado a ${val}.`;
+
+                    setTimeout(() => {
+                        closeForgotModal();
+                        // Re-enable form fields
+                        forgotSubmitBtn.disabled = false;
+                        forgotBtnText.textContent = 'Enviar enlace de recuperación';
+                        forgotEmail.disabled = false;
+                    }, 1500);
+
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+
+</html>
